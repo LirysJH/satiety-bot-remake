@@ -464,14 +464,15 @@ function imgui.OnDrawFrame()
 		if new == 1 then
 			imgui.SameLine()
 			if imgui.Button(u8'Обновить##update') then
-				sampAddChatMessage(('[Satiety-Bot]: Обновляюсь...'), 0xF1CB09)
-				sampAddChatMessage(('[Satiety-Bot]: Текущая версия: '..thisScript().version..". Новая версия: "..ver), 0xF1CB09)
-				wait(300)
-				downloadUrlToFile(updatelink, thisScript().path, function(id3, status1, p13, p23)
-					if status1 == dlstatus.STATUS_ENDDOWNLOADDATA then
-						sampAddChatMessage(('[Satiety-Bot]: Обновление завершено!'), 0xF1CB09)
-						thisScript():reload()
-					end
+				lua_thread.create(function()
+					sampAddChatMessage(('[Satiety-Bot]: Обновляюсь...'), 0xF1CB09)
+					wait(300)
+					downloadUrlToFile(updatelink, thisScript().path, function(id3, status1, p13, p23)
+						if status1 == dlstatus.STATUS_ENDDOWNLOADDATA then
+							sampAddChatMessage(('[Satiety-Bot]: Обновление завершено!'), 0xF1CB09)
+							thisScript():reload()
+						end
+					end)
 				end)
 			end
 		end
