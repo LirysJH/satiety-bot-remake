@@ -1,6 +1,6 @@
 script_name("Satiety-Bot")
 script_author("James Hawk")
-script_version("2.3")
+script_version("023")
 
 local key = require "vkeys"
 local memory = require "memory"
