@@ -105,6 +105,7 @@ function main()
 						setVirtualKeyState(13)
 						wait(250)
 					end
+					nopHook("onShowDialog", true)
 					if flag or flag1 then
 						sampSendChat("/house")
 						wait(250)
@@ -121,9 +122,9 @@ function main()
 								while health < 100 do
 									sampSendChat("/usemed")
 									wait(4000)
+									health = sampGetPlayerHealth(id)
 								end
-							end
-						--------alcohol---------	
+							end	
 						elseif f_alc.v then
 							if health <100 then
 								sampSendChat("/house")
@@ -136,19 +137,21 @@ function main()
 									while health < 100 do
 										sampSendClickTextdraw(593)
 										wait(450)
+										health = sampGetPlayerHealth(id)
 									end
 									sampSendClickTextdraw(590)
 								end
 								wait(450)
-								setVirtualKeyState(27)
-								wait(450)
-								setVirtualKeyState(13)
+								-- setVirtualKeyState(27)
+								-- wait(450)
+								-- setVirtualKeyState(13)
 							end
 						elseif f_spr.v then
 							if health < 100 then
 								while health < 100 do
 									sampSendChat("/sprunk")
 									wait(4000)
+									health = sampGetPlayerHealth(id)
 								end
 							end
 						elseif f_beer.v then
@@ -156,6 +159,7 @@ function main()
 								while health < 100 do
 									sampSendChat("/beer")
 									wait(4000)
+									health = sampGetPlayerHealth(id)
 								end
 							end
 						end
@@ -184,6 +188,7 @@ function main()
 								while health < 100 do
 									sampSendChat("/usemed")
 									wait(4000)
+									health = sampGetPlayerHealth(id)
 								end
 							end
 						elseif f_drg.v then
@@ -207,6 +212,7 @@ function main()
 								while health < 100 do
 									sampSendChat("/sprunk")
 									wait(4000)
+									health = sampGetPlayerHealth(id)
 								end
 							end
 						elseif f_beer1.v then
@@ -214,6 +220,7 @@ function main()
 								while health < 100 do
 									sampSendChat("/beer")
 									wait(4000)
+									health = sampGetPlayerHealth(id)
 								end
 							end
 						end
@@ -225,6 +232,7 @@ function main()
 							sampSendChat(cfg.config.command)
 						end
 					end
+					nopHook("onShowTextDraw", false)
 				end
 			end
 			--------------------------------------------------
@@ -492,11 +500,11 @@ function imgui.TextQuestion(txt)
 end
 
 function setVirtualKeyState(key)
-  lua_thread.create(function(key)
-	  setVirtualKeyDown(key, true)
-	  wait(150)
-	  setVirtualKeyDown(key, false)
-  end, key)
+	lua_thread.create(function(key)
+		setVirtualKeyDown(key, true)
+		wait(150)
+		setVirtualKeyDown(key, false)
+	end, key)
 end
 
 function onScriptTerminate(script, quitGame)
@@ -505,19 +513,19 @@ function onScriptTerminate(script, quitGame)
 	end
 end
 
-function sampev.onShowDialog(id, style, title, b1, b2, text)
-	lua_thread.create(function()
-		if flag or flag1 then
-			if id == 185 and (flag or flag1) then --item in the fridge
-				wait(250)
-				sampCloseCurrentDialogWithButton(1)
-			elseif id == 9965 and (flag2 or flag3) then --/eat
-				wait(16500)
-				sampCloseCurrentDialogWithButton(1)
-			end
-		end
-	end)
-end
+-- function sampev.onShowDialog(id, style, title, b1, b2, text)
+	-- lua_thread.create(function()
+		-- if flag or flag1 then
+			-- if id == 185 and (flag or flag1) then --item in the fridge
+				-- wait(250)
+				-- sampCloseCurrentDialogWithButton(1)
+			-- elseif id == 9965 and (flag2 or flag3) then --/eat
+				-- wait(16500)
+				-- sampCloseCurrentDialogWithButton(1)
+			-- end
+		-- end
+	-- end)
+-- end
 
 function sampev.onDisplayGameText(style, time, text)
     if f_scrText.v and (flag or flag1 or flag2 or flag3) then
@@ -579,4 +587,11 @@ function readBitstream(bs)
 	data.x = raknetBitStreamReadFloat(bs)
 	data.y = raknetBitStreamReadFloat(bs)
 	return data
+end
+
+function nopHook(name, bool)
+    local samp = require 'samp.events'
+    samp[name] = function()
+        if bool then return false end
+    end
 end
