@@ -238,7 +238,7 @@ function imgui.OnDrawFrame()
 		local sw, sh = getScreenResolution()
 		imgui.SetNextWindowPos(imgui.ImVec2(sw / 2, sh / 2), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
 		imgui.SetNextWindowSize(imgui.ImVec2(350, 460), imgui.Cond.FirstUseEver)
-		imgui.Begin("Satiety-Bot v2.2 by JHawk", main_window_state, imgui.WindowFlags.NoResize)-- + imgui.WindowFlags.NoMove)
+		imgui.Begin("Satiety-Bot v2.3 by JHawk", main_window_state, imgui.WindowFlags.NoResize)-- + imgui.WindowFlags.NoMove)
 		imgui.SetCursorPos(imgui.ImVec2(100, 25), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
 		if imgui.Button(u8'Перезагрузить скрипт') then
 			lua_thread.create(function()
