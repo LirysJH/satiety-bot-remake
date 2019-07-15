@@ -1,6 +1,6 @@
 script_name("Satiety-Bot")
 script_author("James Hawk")
-script_version("2.2")
+script_version("2.3.1")
 
 local key = require "vkeys"
 local memory = require "memory"
@@ -223,7 +223,7 @@ function main()
 							sampSendChat(cfg.config.command)
 						end
 					end
-					nopHook("onShowTextDraw", false)
+					nopHook("onShowDialog", false)
 				end
 			end
 			--------------------------------------------------
@@ -239,7 +239,7 @@ function imgui.OnDrawFrame()
 		imgui.SetNextWindowSize(imgui.ImVec2(350, 440), imgui.Cond.FirstUseEver)
 		imgui.Begin("Satiety-Bot v2.2 by JHawk", main_window_state, imgui.WindowFlags.NoResize)-- + imgui.WindowFlags.NoMove)
 		imgui.SetCursorPos(imgui.ImVec2(100, 25), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
-		if imgui.Button(u8'Перезагрузить скрипт') then
+		if imgui.Button(u8'РџРµСЂРµР·Р°РіСЂСѓР·РёС‚СЊ СЃРєСЂРёРїС‚') then
 			lua_thread.create(function()
 				sampAddChatMessage(string.format("[%s]: RELOADING",thisScript().name), 0x0000FF)
 				sampProcessChatInput("//isb")
@@ -262,47 +262,47 @@ function imgui.OnDrawFrame()
 			end)
 		end
 		imgui.Separator()
-		imgui.Text(u8"Выберите тип работы скрипта:")
+		imgui.Text(u8"Р’С‹Р±РµСЂРёС‚Рµ С‚РёРї СЂР°Р±РѕС‚С‹ СЃРєСЂРёРїС‚Р°:")
 		imgui.SameLine()
-		imgui.TextQuestion(u8"Циклический - срабатывание через указанную задержку. You are hungry - срабатывает, когда на экране появляется красная надпись \"You are hungry!\" или \"You are very hungry!\". Голод - срабатывает когда значение сытости достигает ниже 20 единиц.")
-		imgui.Checkbox(u8"Циклический##loop", f_loop)
+		imgui.TextQuestion(u8"Р¦РёРєР»РёС‡РµСЃРєРёР№ - СЃСЂР°Р±Р°С‚С‹РІР°РЅРёРµ С‡РµСЂРµР· СѓРєР°Р·Р°РЅРЅСѓСЋ Р·Р°РґРµСЂР¶РєСѓ. You are hungry - СЃСЂР°Р±Р°С‚С‹РІР°РµС‚, РєРѕРіРґР° РЅР° СЌРєСЂР°РЅРµ РїРѕСЏРІР»СЏРµС‚СЃСЏ РєСЂР°СЃРЅР°СЏ РЅР°РґРїРёСЃСЊ \"You are hungry!\" РёР»Рё \"You are very hungry!\". Р“РѕР»РѕРґ - СЃСЂР°Р±Р°С‚С‹РІР°РµС‚ РєРѕРіРґР° Р·РЅР°С‡РµРЅРёРµ СЃС‹С‚РѕСЃС‚Рё РґРѕСЃС‚РёРіР°РµС‚ РЅРёР¶Рµ 20 РµРґРёРЅРёС†.")
+		imgui.Checkbox(u8"Р¦РёРєР»РёС‡РµСЃРєРёР№##loop", f_loop)
 		imgui.SameLine()
 		imgui.Checkbox("You are hungry##hook_text", f_scrText)
 		imgui.SameLine()
-		imgui.Checkbox(u8"Голод##sat", f_satiety)
+		imgui.Checkbox(u8"Р“РѕР»РѕРґ##sat", f_satiety)
 		imgui.Separator()
 		imgui.PushItemWidth(80)
-		imgui.InputText(u8"Вид анимации", text_buffer)
+		imgui.InputText(u8"Р’РёРґ Р°РЅРёРјР°С†РёРё", text_buffer)
 		imgui.PopItemWidth()
 		imgui.SameLine()
-		imgui.Checkbox(u8"Юзать анимации##animation", f_anim)
+		imgui.Checkbox(u8"Р®Р·Р°С‚СЊ Р°РЅРёРјР°С†РёРё##animation", f_anim)
 		imgui.PushItemWidth(80)
-		imgui.InputText(u8"Задержка в сек.", text_buffer1)
+		imgui.InputText(u8"Р—Р°РґРµСЂР¶РєР° РІ СЃРµРє.", text_buffer1)
 		imgui.PopItemWidth()
 		imgui.SameLine()
-		imgui.Text(u8"Сейчас: "..cfg.config.wait_time)
+		imgui.Text(u8"РЎРµР№С‡Р°СЃ: "..cfg.config.wait_time)
 		imgui.Separator()
-		imgui.Text(u8"Выберите хил в доме:")
+		imgui.Text(u8"Р’С‹Р±РµСЂРёС‚Рµ С…РёР» РІ РґРѕРјРµ:")
 		imgui.SameLine()
-		imgui.TextQuestion(u8"Эти виды хила используются в alt/anims ботах.")
-		imgui.Checkbox(u8"Аптечка##med", f_med)
+		imgui.TextQuestion(u8"Р­С‚Рё РІРёРґС‹ С…РёР»Р° РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ РІ alt/anims Р±РѕС‚Р°С….")
+		imgui.Checkbox(u8"РђРїС‚РµС‡РєР°##med", f_med)
 		imgui.SameLine()
-		imgui.Checkbox(u8"Алкоголь##alc", f_alc)
+		imgui.Checkbox(u8"РђР»РєРѕРіРѕР»СЊ##alc", f_alc)
 		imgui.SameLine()
-		imgui.Checkbox(u8"Спранк##spr", f_spr)
+		imgui.Checkbox(u8"РЎРїСЂР°РЅРє##spr", f_spr)
 		imgui.SameLine()
-		imgui.Checkbox(u8"Пиво##beer", f_beer)
+		imgui.Checkbox(u8"РџРёРІРѕ##beer", f_beer)
 		imgui.Separator()
-		imgui.Text(u8"Выберите хил на улице:")
+		imgui.Text(u8"Р’С‹Р±РµСЂРёС‚Рµ С…РёР» РЅР° СѓР»РёС†Рµ:")
 		imgui.SameLine()
-		imgui.TextQuestion(u8"Эти виды хила используются в chips/fish ботах.")
-		imgui.Checkbox(u8"Аптечка##med1", f_med1)
+		imgui.TextQuestion(u8"Р­С‚Рё РІРёРґС‹ С…РёР»Р° РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ РІ chips/fish Р±РѕС‚Р°С….")
+		imgui.Checkbox(u8"РђРїС‚РµС‡РєР°##med1", f_med1)
 		imgui.SameLine()
-		imgui.Checkbox(u8"Наркотики##drg", f_drg)
+		imgui.Checkbox(u8"РќР°СЂРєРѕС‚РёРєРё##drg", f_drg)
 		imgui.SameLine()
-		imgui.Checkbox(u8"Спранк##spr1", f_spr1)
+		imgui.Checkbox(u8"РЎРїСЂР°РЅРє##spr1", f_spr1)
 		imgui.SameLine()
-		imgui.Checkbox(u8"Пиво##beer1", f_beer1)
+		imgui.Checkbox(u8"РџРёРІРѕ##beer1", f_beer1)
 		imgui.Separator()
 		imgui.PushItemWidth(11)
 		if imgui.Button('Check cfg') then
@@ -344,7 +344,7 @@ function imgui.OnDrawFrame()
 		end
 		imgui.PopItemWidth()
 		imgui.SameLine()
-		imgui.Text(u8"Работа в свёрнутом режиме")
+		imgui.Text(u8"Р Р°Р±РѕС‚Р° РІ СЃРІС‘СЂРЅСѓС‚РѕРј СЂРµР¶РёРјРµ")
 		imgui.SameLine()
 		if imgui.ToggleButton("AAFK##1", imBool) then
 			--check = not check
@@ -364,11 +364,11 @@ function imgui.OnDrawFrame()
 		end
 		imgui.Separator()
 		imgui.SetCursorPos(imgui.ImVec2(50, 280), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
-		imgui.Text(u8"Выберите тип бота для начала работы.")
+		imgui.Text(u8"Р’С‹Р±РµСЂРёС‚Рµ С‚РёРї Р±РѕС‚Р° РґР»СЏ РЅР°С‡Р°Р»Р° СЂР°Р±РѕС‚С‹.")
 		imgui.SetCursorPos(imgui.ImVec2(300, 280), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
-		imgui.TextQuestion(u8"Анимации нужны, чтобы вам засчитывало payday. Все боты хилятся только если ваше хп ниже 100 (дабы попросту не тратить ресурсы).")
+		imgui.TextQuestion(u8"РђРЅРёРјР°С†РёРё РЅСѓР¶РЅС‹, С‡С‚РѕР±С‹ РІР°Рј Р·Р°СЃС‡РёС‚С‹РІР°Р»Рѕ payday. Р’СЃРµ Р±РѕС‚С‹ С…РёР»СЏС‚СЃСЏ С‚РѕР»СЊРєРѕ РµСЃР»Рё РІР°С€Рµ С…Рї РЅРёР¶Рµ 100 (РґР°Р±С‹ РїРѕРїСЂРѕСЃС‚Сѓ РЅРµ С‚СЂР°С‚РёС‚СЊ СЂРµСЃСѓСЂСЃС‹).")
 		imgui.SetCursorPos(imgui.ImVec2(10, 310), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
-		imgui.Text(u8"Alt-бот")
+		imgui.Text(u8"Alt-Р±РѕС‚")
 		imgui.SameLine()
 		imgui.SetCursorPos(imgui.ImVec2(100, 310), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
 		if (not flag1 and not flag2 and not flag3) then
@@ -383,9 +383,9 @@ function imgui.OnDrawFrame()
 		end
 		imgui.SameLine()
 		imgui.SetCursorPos(imgui.ImVec2(150, 310), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
-		imgui.TextQuestion(u8"Alt-бот - перед включением поставить персонажа в любую alt-анимацию. Ест еду из холодильника (в доме).")
+		imgui.TextQuestion(u8"Alt-Р±РѕС‚ - РїРµСЂРµРґ РІРєР»СЋС‡РµРЅРёРµРј РїРѕСЃС‚Р°РІРёС‚СЊ РїРµСЂСЃРѕРЅР°Р¶Р° РІ Р»СЋР±СѓСЋ alt-Р°РЅРёРјР°С†РёСЋ. Р•СЃС‚ РµРґСѓ РёР· С…РѕР»РѕРґРёР»СЊРЅРёРєР° (РІ РґРѕРјРµ).")
 		imgui.SetCursorPos(imgui.ImVec2(10, 340), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
-		imgui.Text(u8"Anims-бот")
+		imgui.Text(u8"Anims-Р±РѕС‚")
 		imgui.SameLine()
 		imgui.SetCursorPos(imgui.ImVec2(100, 340), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
 		if (not flag and not flag2 and not flag3) then
@@ -400,9 +400,9 @@ function imgui.OnDrawFrame()
 		end
 		imgui.SameLine()
 		imgui.SetCursorPos(imgui.ImVec2(150, 340), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
-		imgui.TextQuestion(u8"Anims-бот - перед включением поставить персонажа в любую anims-анимацию (из /anims). Ест еду из холодильника (в доме).")
+		imgui.TextQuestion(u8"Anims-Р±РѕС‚ - РїРµСЂРµРґ РІРєР»СЋС‡РµРЅРёРµРј РїРѕСЃС‚Р°РІРёС‚СЊ РїРµСЂСЃРѕРЅР°Р¶Р° РІ Р»СЋР±СѓСЋ anims-Р°РЅРёРјР°С†РёСЋ (РёР· /anims). Р•СЃС‚ РµРґСѓ РёР· С…РѕР»РѕРґРёР»СЊРЅРёРєР° (РІ РґРѕРјРµ).")
 		imgui.SetCursorPos(imgui.ImVec2(10, 370), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
-		imgui.Text(u8"Chips-бот")
+		imgui.Text(u8"Chips-Р±РѕС‚")
 		imgui.SameLine()
 		imgui.SetCursorPos(imgui.ImVec2(100, 370), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
 		if (not flag and not flag1 and not flag3) then
@@ -417,9 +417,9 @@ function imgui.OnDrawFrame()
 		end
 		imgui.SameLine()
 		imgui.SetCursorPos(imgui.ImVec2(150, 370), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
-		imgui.TextQuestion(u8"Chips-бот - перед включением поставить персонажа в любую anims-анимацию (из /anims). Ест чипсы.")
+		imgui.TextQuestion(u8"Chips-Р±РѕС‚ - РїРµСЂРµРґ РІРєР»СЋС‡РµРЅРёРµРј РїРѕСЃС‚Р°РІРёС‚СЊ РїРµСЂСЃРѕРЅР°Р¶Р° РІ Р»СЋР±СѓСЋ anims-Р°РЅРёРјР°С†РёСЋ (РёР· /anims). Р•СЃС‚ С‡РёРїСЃС‹.")
 		imgui.SetCursorPos(imgui.ImVec2(10, 400), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
-		imgui.Text(u8"Fish-бот")
+		imgui.Text(u8"Fish-Р±РѕС‚")
 		imgui.SameLine()
 		imgui.SetCursorPos(imgui.ImVec2(100, 400), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
 		if (not flag and not flag1 and not flag2) then
@@ -434,7 +434,7 @@ function imgui.OnDrawFrame()
 		end
 		imgui.SameLine()
 		imgui.SetCursorPos(imgui.ImVec2(150, 400), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
-		imgui.TextQuestion(u8"Fish-бот - перед включением поставить персонажа в любую anims-анимацию (из /anims). Ест рыбу.")		
+		imgui.TextQuestion(u8"Fish-Р±РѕС‚ - РїРµСЂРµРґ РІРєР»СЋС‡РµРЅРёРµРј РїРѕСЃС‚Р°РІРёС‚СЊ РїРµСЂСЃРѕРЅР°Р¶Р° РІ Р»СЋР±СѓСЋ anims-Р°РЅРёРјР°С†РёСЋ (РёР· /anims). Р•СЃС‚ СЂС‹Р±Сѓ.")		
 		imgui.End()
 	end
 end
@@ -488,7 +488,7 @@ end
 
 function sampev.onServerMessage(color,text)
 	if f_scrText_state and (flag or flag1 or flag2 or flag3) then
-		if string.find(text,"Вы взяли комплексный обед. Посмотреть состояние голода можно") then
+		if string.find(text,"Р’С‹ РІР·СЏР»Рё РєРѕРјРїР»РµРєСЃРЅС‹Р№ РѕР±РµРґ. РџРѕСЃРјРѕС‚СЂРµС‚СЊ СЃРѕСЃС‚РѕСЏРЅРёРµ РіРѕР»РѕРґР° РјРѕР¶РЅРѕ") then
 			f_scrText_state=false
 		end
 	end
