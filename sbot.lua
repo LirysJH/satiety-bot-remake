@@ -1,6 +1,6 @@
 script_name("Satiety-Bot")
 script_author("James Hawk")
-script_version("023")
+script_version("024")
 
 local key = require "vkeys"
 local memory = require "memory"
@@ -232,7 +232,7 @@ function main()
 							sampSendChat(cfg.config.command)
 						end
 					end
-					nopHook("onShowTextDraw", false)
+					nopHook("onShowDialog", false)
 				end
 			end
 			--------------------------------------------------
